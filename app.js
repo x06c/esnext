@@ -30,8 +30,8 @@ console.log(weather);
  * destructuration
  */
 console.log("##### DESTRUCTURATION #####")
-const {city} = getWeather();
-const {temperature} = getWeather();
+const {city} = weather.city;
+const {temperature} = weather.temperature;
 console.log(city);
 console.log(temperature);
 
@@ -57,11 +57,11 @@ class Trip {
         this.imageUrl = imageUrl;
     }
 
-    set setPrice(newPrice) {
+    set price(newPrice) {
         this._price = newPrice;
     }
 
-    get getPrice() {
+    get price() {
         return this._price;
     }
 
@@ -84,7 +84,7 @@ console.log("--- toString() ---");
 console.log(parisTrip.toString());
 
 console.log("--- ajout price ---")
-parisTrip.setPrice = 100;
+parisTrip.price = 100;
 console.log(parisTrip.toString());
 
 console.log("--- default ---")
@@ -107,3 +107,47 @@ class FreeTrip extends Trip{
 
 const freeTrip = new FreeTrip("nantes", "Nantes", "img/nantes.jpg");
 console.log(freeTrip.toString());
+
+
+console.log("#############################\n##### Promise, Set, Map #####\n#############################");
+
+class TripService {
+    constructor() {
+        // TODO Set of 3 trips
+        this.trips = new Set();
+        this.trips.add(new Trip('paris', 'Paris', 'img/paris.jpg'));
+        this.trips.add(new Trip('nantes', 'Nantes', 'img/nantes.jpg'));
+        this.trips.add(new Trip('rio-de-janeiro', 'Rio de Janeiro', 'img/rio-de-janeiro.jpg'));
+    }
+    findByName(tripName) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                let resultTrip = null;
+                this.trips.forEach(e -> {
+                    if(_e.name == tripName) {
+                        resultTrip = e;
+                    }
+                });
+                if(resultTrip === null) {
+                    reject("No trip found with name " + tripName)
+                }
+            }, 2000)
+        });
+    }
+}
+class PriceService {
+    constructor() {
+        // TODO Map of 2 trips
+        // 'paris' --> price == 100
+        // 'rio-de-janeiro' --> price == 800)
+        // no price for 'nantes'
+    }
+    findPriceByTripId(tripId) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                // ici l'exécution du code est asynchrone
+                // TODO utiliser resolve et reject en fonction du résultat de la recherche
+            }, 2000)
+        });
+    }
+}
