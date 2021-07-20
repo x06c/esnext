@@ -1,0 +1,20 @@
+{
+  "name": "esnext",
+  "version": "1.0.0",
+  "description": "TP1_js_advanced",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/x06c/esnext.git"
+  },
+  "author": "x06c",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/x06c/esnext/issues"
+  },
+  "homepage": "https://github.com/x06c/esnext#readme"
+}
