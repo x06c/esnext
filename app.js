@@ -123,13 +123,15 @@ class TripService {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 let resultTrip = null;
-                this.trips.forEach(e -> {
-                    if(_e.name == tripName) {
+                this.trips.forEach(e => {
+                    if(e.name == tripName) {
                         resultTrip = e;
                     }
                 });
                 if(resultTrip === null) {
-                    reject("No trip found with name " + tripName)
+                    reject("No trip found with name: " + tripName)  //error
+                } else {
+                    resolve(resultTrip); //success
                 }
             }, 2000)
         });
@@ -138,6 +140,11 @@ class TripService {
 class PriceService {
     constructor() {
         // TODO Map of 2 trips
+        this.mapPriceTrip = new Map();
+        this.mapPriceTrip.set('paris', 100);
+        this.mapPriceTrip.set('rio-de-janeiro', 800);
+        this.mapPriceTrip.set('nantes');
+
         // 'paris' --> price == 100
         // 'rio-de-janeiro' --> price == 800)
         // no price for 'nantes'
@@ -147,7 +154,43 @@ class PriceService {
             setTimeout(() => {
                 // ici l'exécution du code est asynchrone
                 // TODO utiliser resolve et reject en fonction du résultat de la recherche
+                let resultPrice = null;
+                this.mapPriceTrip.forEach(p => {
+                    if(p._price == tripId) {
+                        resultPrice = p;
+                    }
+                });
+                if(resultPrice === null) {
+                    reject("ERROR ID TRIP");
+                } else {
+                    resolve(resultPrice);
+                }
             }, 2000)
         });
     }
 }
+
+let tripService = new TripService();
+let priceService = new PriceService();
+
+tripService.findByName("Paris")
+    .then(function(tripName){
+        console.log(tripName);
+    }, function(error){
+        console.log(error);
+    });
+
+tripService.findByName("Toulouse")
+    .then(function(tripName){
+        console.log(tripName);
+    }, function(error){
+        console.log(error);
+    });
+
+priceService.findPriceByTripId("rio-de-janeiro")
+    .then(function(tripPrice){
+        console.log(tripPrice);
+    }, function(error){
+        console.log(error);
+    });
+
