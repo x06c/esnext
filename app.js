@@ -4,7 +4,7 @@ console.log(favoriteCityId);
 favoriteCityId = "paris";
 console.log(favoriteCityId);
 
-const citiesId = ["paris","nyc","rome","rio-de-janeiro"];
+const citiesId = ["paris", "nyc", "rome", "rio-de-janeiro"];
 console.table(citiesId);
 
 /**
@@ -20,7 +20,7 @@ console.log(values);
 function getWeather(cityId = "ma_ville") {
     let city = cityId.toUpperCase();
     let temperature = 20;
-    return {city, temperature};
+    return { city, temperature };
 }
 
 const weather = getWeather(favoriteCityId);
@@ -30,8 +30,8 @@ console.log(weather);
  * destructuration
  */
 console.log("##### DESTRUCTURATION #####")
-const {city} = weather.city;
-const {temperature} = weather.temperature;
+const { city } = weather.city;
+const { temperature } = weather.temperature;
 console.log(city);
 console.log(temperature);
 
@@ -51,10 +51,11 @@ console.log(othersCityId.length);
 console.log("##### class #####")
 
 class Trip {
-    constructor(id, name, imageUrl) {
+    constructor(id, name, imageUrl, price) {
         this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
+        this._price = price;
     }
 
     set price(newPrice) {
@@ -73,10 +74,10 @@ class Trip {
         return new Trip("rio-de-janeiro", "Rio de Janeiro", "img/rio-de-janeiro.jpg");
     }
 
-    
+
 }
 
-let parisTrip = new Trip('paris','Paris','img/paris.jpg');
+let parisTrip = new Trip('paris', 'Paris', 'img/paris.jpg');
 console.log(parisTrip);
 console.log(parisTrip.name);
 
@@ -93,7 +94,7 @@ console.log(defaultTrip.toString());
 
 console.log("##### inheritance #####");
 
-class FreeTrip extends Trip{
+class FreeTrip extends Trip {
     constructor(id, name, imageUrl) {
         super(id, name, imageUrl);
         this._price = 0;
@@ -102,7 +103,7 @@ class FreeTrip extends Trip{
     toString() {
         return "Free" + super.toString();
     }
-    
+
 }
 
 const freeTrip = new FreeTrip("nantes", "Nantes", "img/nantes.jpg");
@@ -124,11 +125,11 @@ class TripService {
             setTimeout(() => {
                 let resultTrip = null;
                 this.trips.forEach(e => {
-                    if(e.name == tripName) {
+                    if (e.name == tripName) {
                         resultTrip = e;
                     }
                 });
-                if(resultTrip === null) {
+                if (resultTrip === null) {
                     reject("No trip found with name: " + tripName)  //error
                 } else {
                     resolve(resultTrip); //success
@@ -141,13 +142,15 @@ class PriceService {
     constructor() {
         // TODO Map of 2 trips
         this.mapPriceTrip = new Map();
-        this.mapPriceTrip.set('paris', 100);
-        this.mapPriceTrip.set('rio-de-janeiro', 800);
-        this.mapPriceTrip.set('nantes');
+        this.mapPriceTrip.set('paris', new Trip('paris', 'Paris', 'img/paris.jpg', 100));
+        this.mapPriceTrip.set('rio-de-janeiro', new Trip('rio-de-janeiro', 'Rio de Janeiro', 'img/rio-de-janeiro.jpg', 800));
+        this.mapPriceTrip.set('nantes', new Trip('nantes', 'Nantes', 'img/nantes.jpg'));
 
         // 'paris' --> price == 100
         // 'rio-de-janeiro' --> price == 800)
         // no price for 'nantes'
+
+        console.log(this.mapPriceTrip);
     }
     findPriceByTripId(tripId) {
         return new Promise((resolve, reject) => {
@@ -156,14 +159,15 @@ class PriceService {
                 // TODO utiliser resolve et reject en fonction du résultat de la recherche
                 let resultPrice = null;
                 this.mapPriceTrip.forEach(p => {
-                    if(p._price == tripId) {
-                        resultPrice = p;
+                    console.log("into method" + p);
+                    if (p.id == tripId) {
+                        resultPrice = p.price;
                     }
                 });
-                if(resultPrice === null) {
-                    reject("ERROR ID TRIP");
+                if (resultPrice === null || resultPrice === undefined) {
+                    reject("ERROR ID TRIP aucun prix pour l'id: " + tripId);
                 } else {
-                    resolve(resultPrice);
+                    resolve("Prix id: " + tripId + ": " + resultPrice);
                 }
             }, 2000)
         });
@@ -174,23 +178,30 @@ let tripService = new TripService();
 let priceService = new PriceService();
 
 tripService.findByName("Paris")
-    .then(function(tripName){
+    .then(function (tripName) {
         console.log(tripName);
-    }, function(error){
+    }, function (error) {
         console.log(error);
     });
 
 tripService.findByName("Toulouse")
-    .then(function(tripName){
+    .then(function (tripName) {
         console.log(tripName);
-    }, function(error){
+    }, function (error) {
         console.log(error);
     });
 
 priceService.findPriceByTripId("rio-de-janeiro")
-    .then(function(tripPrice){
+    .then(function (tripPrice) {
         console.log(tripPrice);
-    }, function(error){
+    }, function (error) {
+        console.log(error);
+    });
+
+priceService.findPriceByTripId("nantes")
+    .then(function (tripPrice) {
+        console.log(tripPrice);
+    }, function (error) {
         console.log(error);
     });
 
