@@ -149,8 +149,6 @@ class PriceService {
         // 'paris' --> price == 100
         // 'rio-de-janeiro' --> price == 800)
         // no price for 'nantes'
-
-        console.log(this.mapPriceTrip);
     }
     findPriceByTripId(tripId) {
         return new Promise((resolve, reject) => {
@@ -159,7 +157,6 @@ class PriceService {
                 // TODO utiliser resolve et reject en fonction du résultat de la recherche
                 let resultPrice = null;
                 this.mapPriceTrip.forEach(p => {
-                    console.log("into method" + p);
                     if (p.id == tripId) {
                         resultPrice = p.price;
                     }
